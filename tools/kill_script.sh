@@ -1,4 +1,5 @@
 #!/bin/bash
+#set -x
 
 #pumba_linux_386 was not built to be automated. 
 #pumba_linux_386 does not stop itself from running when tasks are complete.
