@@ -9,7 +9,7 @@ export build_wait_time=$1
 sleep $build_wait_time
 
 for pid in $(ps -fe | grep '[p]umba' | grep -v grep | awk '{print $2}'); do
-    kill "$pid"
+    sudo kill -9 "$pid"
 done
 
 #Old. Catches the grep containing and throws an error because it can't find itself.
