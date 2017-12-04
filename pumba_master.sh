@@ -1,10 +1,15 @@
 #!/bin/bash
 #set -x
+exec 1> >(logger -s -t $(basename $0)) 2>&1
 
-#Do not edit
-export pumba_test=./pumba_linux_386
+export container_name=$1
 export build_wait_time=60
-export test_wait_time=60
+#export test_wait_time=60
+
+chmod +x ./*
+chmod +x ./tests/*
+chmod +x ./tools/*
+chmod +x ./pumba_linux_386
 
 docker_setup() {
 #sudo groupadd docker
@@ -13,51 +18,17 @@ sudo gpasswd -a "$USER" docker
 }
 docker_setup
 
-chmod +x ./tests/*
-chmod +x ./pumba_linux_386
-
-#Your modifications here
-export container_name=$1
-
-###
-###TIMEOUT
-###
-
-export pumba_kill="timeout 6 ./tests/pumba_kill.sh"
-export pumba_delay="./tests/pumba_delay.sh"
-export pumba_pause="./tests/pumba_pause.sh"
-export pumba_stop="./tests/pumba_stop.sh"
-export pumba_rm="./tests/pumba_rm.sh"
-export pumba_netem_loss="./tests/pumba_netem_loss.sh"
-export pumba_netem_rate="./tests/pumba_netem_rate.sh"
-
 #Validate paramaters
 if [ -z "$*" ] ; then
   echo -en "No argeuments supplied. You must specify which container to use and which test to run\\n"
-  echo -en "ex: ./pumba_master.sh ubuntu test_1"
+  echo -en "ex: ./pumba_master.sh ubuntu test_1\\n"
   exit 0
 fi
-
-#Confirm clean enviornment
-#Using Docker instead of Pumba
-docker_clean() {
-docker ps -a >/tmp/docker_ps
-#sed -i '1d' /tmp/docker_ps
-
-if grep -q "test" /tmp/docker_ps; 
-	then
-		echo -en "Containers stopped:\\n"
-		docker stop $(docker ps -a -q)
-	else
-		echo -en "No Containers to stop.\\n"
-fi
-}
-docker_clean
 
 #Build the enviornment
 docker_build_containers() {
 #x4 containers
-echo -en "Building containers [$1]:\\n"
+echo -en "Building containers for [$container_name]:\\n"
 #for i in {1..4}; do docker run -d --rm --name test$i ubuntu tail -f /dev/null; done
 for i in {1..4}; do docker run -d --rm --name test$i "$container_name" tail -f /dev/null; done
 }
@@ -74,46 +45,61 @@ while [ $# -gt 0 ]; do
 shift #this preserves the first argument $1 as the $container_name
 	case "$1" in
 		pumba_kill)
-				$pumba_kill
-				echo -en "Docker kill test.\\n"
+				./tests/pumba_kill.sh &>>./results/log & ./tools/kill_script.sh $build_wait_time &
+				echo -en "Docker kill test:\\n"
 				#Send termination signal to the main process inside target container(s)
 				;;
 		pumba_delay)
-				$pumba_delay
-				echo -en "Docker delay test.\\n"			
+				./tests/pumba_delay.sh & ./tools/kill_script.sh &
+				echo -en "Docker delay test:\\n"			
 				#Delay egress traffic for specified containers; networks show variability so it is possible to add random variation; delay variation isn't purely random, so to emulate that there is a correlation
 				;;
 		pumba_pause)
-				$pumba_pause
-				echo -en "Docker pause test.\\n"
+				./tests/pumba_pause.sh & ./tools/kill_script.sh &
+				echo -en "Docker pause test:\\n"
 				#Stop the main process inside target containers, sending  SIGTERM, and then SIGKILL after a grace period
 				;;
 		pumba_stop)
-				$pumba_stop
-				echo -en "Docker stop test.\\n"			
+				./tests/pumba_stop.sh & ./tools/kill_script.sh &
+				echo -en "Docker stop test:\\n"			
 				#Remove target containers, with links and volumes
 				;;
 		pumba_rm)
-				$pumba_rm
-				echo -en "Docker rm test.\\n"			
+				./tests/pumba_rm.sh & ./tools/kill_script.sh &
+				echo -en "Docker rm test:\\n"			
 				#Pause all running processes within target containers
 				;;
 		pumba_netem_loss)
-				$pumba_netem_loss
-				echo -en "Docker netem_loss test.\\n"
+				./tests/pumba_netem_loss.sh & ./tools/kill_script.sh &
+				echo -en "Docker netem_loss test:\\n"
 				#Adds packet losses, based on independent (Bernoulli) probability model
 				;;
 		pumba_netem_rate)
-				$pumba_netem_rate
-				echo -en "Docker netem_rate test.\\n"			
+				./tests/pumba_netem_rate.sh & ./tools/kill_script.sh &
+				echo -en "Docker netem_rate test:\\n"			
 				#Rate limit egress traffic for specified containers
 				;;
 	esac
 	shift
 done
 
+#Wait for tests
+sleep $build_wait_time
+
 #Confirm clean enviornment
 #Using Docker instead of Pumba
+docker_clean() {
+docker ps -a >/tmp/docker_ps
+#sed -i '1d' /tmp/docker_ps
+
+if grep -q "test" /tmp/docker_ps; 
+	then
+		echo -en "Containers stopped:\\n"
+		docker stop $(docker ps -a -q)
+	else
+		echo -en "No Containers to stop.\\n"
+fi
+}
 docker_clean
 
 echo -en "Done.\\n"
