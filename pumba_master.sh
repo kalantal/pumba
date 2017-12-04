@@ -1,14 +1,14 @@
 #!/bin/bash
-set -x
+#set -x
 
 #Do not edit
 export pumba_test=./pumba_linux_386
-export build_wait_time=6
-export test_wait_time=6
+export build_wait_time=60
+export test_wait_time=60
 
 docker_setup() {
 #sudo groupadd docker
-getent group docker || groupadd docker
+id -u "$user" &>/dev/null || sudo groupadd docker
 sudo gpasswd -a "$USER" docker
 }
 docker_setup
@@ -18,6 +18,18 @@ chmod +x ./pumba_linux_386
 
 #Your modifications here
 export container_name=$1
+
+###
+###TIMEOUT
+###
+
+export pumba_kill="timeout 6 ./tests/pumba_kill.sh"
+export pumba_delay="./tests/pumba_delay.sh"
+export pumba_pause="./tests/pumba_pause.sh"
+export pumba_stop="./tests/pumba_stop.sh"
+export pumba_rm="./tests/pumba_rm.sh"
+export pumba_netem_loss="./tests/pumba_netem_loss.sh"
+export pumba_netem_rate="./tests/pumba_netem_rate.sh"
 
 #Validate paramaters
 if [ -z "$*" ] ; then
@@ -46,6 +58,7 @@ docker_clean
 docker_build_containers() {
 #x4 containers
 echo -en "Building containers [$1]:\\n"
+#for i in {1..4}; do docker run -d --rm --name test$i ubuntu tail -f /dev/null; done
 for i in {1..4}; do docker run -d --rm --name test$i "$container_name" tail -f /dev/null; done
 }
 docker_build_containers
@@ -61,37 +74,37 @@ while [ $# -gt 0 ]; do
 shift #this preserves the first argument $1 as the $container_name
 	case "$1" in
 		pumba_kill)
-				timeout $test_wait_time ./tests/pumba_kill.sh
+				$pumba_kill
 				echo -en "Docker kill test.\\n"
 				#Send termination signal to the main process inside target container(s)
 				;;
 		pumba_delay)
-				timeout $test_wait_time ./tests/pumba_delay.sh
+				$pumba_delay
 				echo -en "Docker delay test.\\n"			
 				#Delay egress traffic for specified containers; networks show variability so it is possible to add random variation; delay variation isn't purely random, so to emulate that there is a correlation
 				;;
 		pumba_pause)
-				timeout $test_wait_time ./tests/pumba_pause.sh
+				$pumba_pause
 				echo -en "Docker pause test.\\n"
 				#Stop the main process inside target containers, sending  SIGTERM, and then SIGKILL after a grace period
 				;;
 		pumba_stop)
-				timeout $test_wait_time ./tests/pumba_stop.sh
+				$pumba_stop
 				echo -en "Docker stop test.\\n"			
 				#Remove target containers, with links and volumes
 				;;
 		pumba_rm)
-				timeout $test_wait_time ./tests/pumba_rm.sh
+				$pumba_rm
 				echo -en "Docker rm test.\\n"			
 				#Pause all running processes within target containers
 				;;
 		pumba_netem_loss)
-				timeout $test_wait_time ./tests/pumba_netem_loss.sh
+				$pumba_netem_loss
 				echo -en "Docker netem_loss test.\\n"
 				#Adds packet losses, based on independent (Bernoulli) probability model
 				;;
 		pumba_netem_rate)
-				timeout $test_wait_time ./tests/pumba_netem_rate.sh
+				$pumba_netem_rate
 				echo -en "Docker netem_rate test.\\n"			
 				#Rate limit egress traffic for specified containers
 				;;
