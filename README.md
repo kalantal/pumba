@@ -62,14 +62,12 @@ Rate limit egress traffic for specified containers
 
 Add .sh file with the same schema as the others in the /tests/ folder.
 
-Modify pumba_master.sh -- ex: ``` export pumba_YOUR_NEW_TEST="timeout $test_wait_time ./tests/YOUR_NEW_TEST.sh" ```
-
-Add new case -- ex:
-```	pumba_YOUR_NEW_TEST)
-			$YOUR_NEW_TEST
-			echo -en "Docker YOUR_NEW_TEST test.\\n"			
-			#YOUR_NEW_TEST
-			;;
+Add new case --
+```pumba_NEW_CASE)
+	./tests/pumba_NEW_CASE.sh &>./results/pumba_results.log & ./tools/kill_script.sh $build_wait_time &
+	echo -en "Pumba NEW_CASE test:\\n"			
+	#NEW_CASE
+	;;
 ```
 
 ## Manual Usage
