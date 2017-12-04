@@ -9,3 +9,5 @@ pumba_netem_loss_containers() {
 $pumba_test netem --duration 1m loss --percent 20 re2:test
 }
 pumba_netem_loss_containers
+
+exit 0

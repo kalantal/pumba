@@ -9,3 +9,5 @@ pumba_stop_containers() {
 $pumba_test --random --interval 10s stop re2:test
 }
 pumba_stop_containers
+
+exit 0
