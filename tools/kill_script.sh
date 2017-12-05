@@ -17,3 +17,11 @@ done
 #sudo kill -9 `ps aux | grep pumba | awk '{print $2}'`
 
 exit 0
+
+
+
+docker stop $(docker ps -a -q)
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
+sudo docker ps -a | grep Stop | cut -d ' ' -f 1 | xargs sudo docker rm
+

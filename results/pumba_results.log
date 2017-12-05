@@ -1,7 +1,2 @@
-time="2017-12-04T14:55:21-06:00" level=info msg="Killing /test3 (82f9dd182a5e833fe0d21dd343b17b3c1e261415dc7aac49d842ac828b632627) with signal SIGKILL" 
-time="2017-12-04T14:55:31-06:00" level=info msg="Killing /test2 (f2178985cce89545578d42da0b438040dbe40d079c292c5e4eb3b66a3c2cb47b) with signal SIGKILL" 
-time="2017-12-04T14:55:41-06:00" level=info msg="Killing /test1 (fb0ee157dd4319067e5fc52b65a9e332dd54d770ff895e25e5359c656fd94276) with signal SIGKILL" 
-time="2017-12-04T14:55:51-06:00" level=info msg="Killing /test4 (e9aaaca7d663bc560abc3da0147e271644c4affdf681a7270a0d3e34971aea25) with signal SIGKILL" 
-./pumba_master.sh: line 52: ./tests/pumba_delay.sh: No such file or directory
-time="2017-12-04T15:12:31-06:00" level=info msg="netem: delay for containers" 
-time="2017-12-04T15:18:33-06:00" level=info msg="netem: delay for containers" 
+time="2017-12-04T22:55:46-06:00" level=info msg="Kill containers" 
+time="2017-12-04T22:55:46-06:00" level=info msg="Killing /ubuntu-pumba (640281bb2beb0647bc3d1fbdd49a4c12ef28d60d33e5ae2ae373dfcac7f56510) with signal SIGKILL" 
