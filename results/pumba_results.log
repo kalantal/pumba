@@ -1,2 +1,2 @@
-time="2017-12-04T22:55:46-06:00" level=info msg="Kill containers" 
-time="2017-12-04T22:55:46-06:00" level=info msg="Killing /ubuntu-pumba (640281bb2beb0647bc3d1fbdd49a4c12ef28d60d33e5ae2ae373dfcac7f56510) with signal SIGKILL" 
+time="2017-12-04T23:23:30-06:00" level=info msg="Kill containers" 
+time="2017-12-04T23:23:30-06:00" level=info msg="Killing /ubuntu-pumba (c1d27ff151c38e62acda4c37aed37c7b6f37ba755098ed6302fc2149624cf978) with signal SIGKILL" 

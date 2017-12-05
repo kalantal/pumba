@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 
 #useage:
 #./pumba_master.sh ubuntu 60 pumba_kill
@@ -23,9 +23,14 @@ sudo gpasswd -a "$USER" docker
 docker_setup
 
 #Validate paramaters
-if [ -z "$*" ] ; then
-  echo -en "No argeuments supplied. You must specify which container to use and which test to run\\n"
-  echo -en "ex: ./pumba_master.sh ubuntu 6 pumba_kill\\n"
+if [ -z "$*" ] && [[ -z "$*" ]] && [[ -z "$*" ]] ; then
+	echo -en "No argeuments supplied. You must specify which container to use and which test to run\\n"
+	echo -en "ex: ./pumba_master.sh rhel7 60 pumba_kill\\n"
+	echo -en "ex: ./pumba_master.sh rhel7 60 pumba_delay\\n"
+	echo -en "ex: ./pumba_master.sh rhel7 60 pumba_pause\\n"
+	echo -en "ex: ./pumba_master.sh rhel7 60 pumba_stop\\n"
+	echo -en "ex: ./pumba_master.sh rhel7 60 pumba_netem_loss\\n"
+	echo -en "ex: ./pumba_master.sh rhel7 60 pumba_netem_rate\\n"
   exit 0
 fi
 
