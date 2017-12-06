@@ -24,37 +24,37 @@ The harder it is to disrupt the steady state, the more confidence we have in the
 ## Automated Usage
 
 **pumba_kill**
-```./pumba_master.sh rhel7 pumba_kill```
+```./pumba_chaos.sh rhel7 60 pumba_kill```
 
 Send termination signal to the main process inside target container(s)
 
 **pumba_delay**
-```./pumba_master.sh rhel7 pumba_delay```
+```./pumba_chaos.sh rhel7 60 pumba_delay```
 
 Delay egress traffic for specified containers; networks show variability so it is possible to add random variation; delay variation isn't purely random, so to emulate that there is a correlation
 
 **pumba_pause**
-```./pumba_master.sh rhel7 pumba_pause```
+```./pumba_chaos.sh rhel7 60 pumba_pause```
 
 Stop the main process inside target containers, sending  SIGTERM, and then SIGKILL after a grace period
 
 **pumba_stop**
-```./pumba_master.sh rhel7 pumba_stop```
+```./pumba_chaos.sh rhel7 60 pumba_stop```
 
 Remove target containers, with links and volumes
 
 **pumba_rm**
-```./pumba_master.sh rhel7 pumba_rm```
+```./pumba_chaos.sh rhel7 60 pumba_rm```
 
 Pause all running processes within target containers
 
 **pumba_netem_loss**
-```./pumba_master.sh rhel7 pumba_netem_rate```
+```./pumba_chaos.sh rhel7 60 pumba_netem_rate```
 
 Adds packet losses, based on independent (Bernoulli) probability model
 
 **pumba_netem_rate**
-```./pumba_master.sh rhel7 pumba_netem_loss```
+```./pumba_chaos.sh rhel7 60 pumba_netem_loss```
 
 Rate limit egress traffic for specified containers
 
