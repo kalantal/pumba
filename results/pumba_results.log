@@ -1,3 +1,24 @@
 
+Pumba container netem rate test:
+
 Pumba container kill test:
-time="2017-12-05T22:30:55-06:00" level=info msg="Killing /ubuntu-pumba (43d2a498b0d3b247663056b7ebd4bf666fd717eb9a10f1062702bd6dead6915d) with signal SIGKILL" 
+time="2017-12-05T23:11:49-06:00" level=info msg="Killing /ubuntu-pumba (9af63fa6e809193978f7fcdc57051e3ac4201e34791d1f2fd5cbc8c6ab033520) with signal SIGKILL" 
+
+Pumba container pause test:
+time="2017-12-05T23:13:50-06:00" level=info msg="Pausing container f7d111ac4128207187249dc6ebf13c5552abd748765dc345f1363af467a0f612" 
+time="2017-12-05T23:14:01-06:00" level=info msg="Unpause container f7d111ac4128207187249dc6ebf13c5552abd748765dc345f1363af467a0f612" 
+
+Pumba container pause test:
+time="2017-12-05T23:16:01-06:00" level=info msg="Pausing container a9b7cb5c9e5627752b533ec7465e5c0fe6592dca6b9bbf27ac3018f381bd2619" 
+time="2017-12-05T23:16:11-06:00" level=info msg="Unpause container a9b7cb5c9e5627752b533ec7465e5c0fe6592dca6b9bbf27ac3018f381bd2619" 
+
+Pumba container stop test:
+time="2017-12-05T23:18:12-06:00" level=info msg="Stopping /ubuntu-pumba (4049b0e1f363ab76bf2238311eff6d31dfff45fae1780476baaebcd1de9e8339) with SIGTERM" 
+
+Pumba container rm test:
+
+Pumba container delay test:
+
+Pumba container netem loss test:
+
+Pumba container netem rate test:

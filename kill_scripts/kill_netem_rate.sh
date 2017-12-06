@@ -9,7 +9,7 @@ export build_wait_time=$1
 
 sleep $build_wait_time
 
-for pid in $(ps -fe | grep '[p]umba_netem_rate.sh' | grep -v grep | awk '{print $2}'); do
+for pid in $(ps -fe | grep 'pumba_netem_rate' | grep -v grep | awk '{print $2}'); do
     sudo kill -9 "$pid"
 done
 

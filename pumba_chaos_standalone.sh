@@ -47,7 +47,7 @@ docker run -d --rm --name "$container_name"-pumba "$container_name" tail -f /dev
 docker_build_container
 
 #CLEAN RUN
-echo 2>&1 | tee ./results/pumba_results.log
+echo 2>&1 | tee -a ./results/pumba_results.log
 
 #TESTING RUN
 #echo 2>&1 | tee -a ./results/pumba_results.log
@@ -131,7 +131,7 @@ pumba_validation 2>&1 | tee -a $complete_log
 
 #Confirm clean enviornment
 #Using Docker instead of Pumba
-./kill_scripts/kill_all.sh
+#./kill_scripts/kill_all.sh
 ./tools/docker_nuke.sh
 
 exit 0
