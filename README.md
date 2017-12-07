@@ -26,14 +26,14 @@ The harder it is to disrupt the steady state, the more confidence we have in the
 **Container:**
   Choose a container from the Citi docker repo
   This container should be running your test payload
-  ex: rhel7
+  ```ex: rhel7```
 
 **Time:**
   It is recommended that you inject these pumba tests when your container test payload is running
   The minimum recommended time to use is 15 seconds before injection
   Most test cases will not take place this soon
   Time is selected as a plain digits in the format of seconds
-  ex: 60
+  ```ex: 60```
   
 ## Automated Usage
 
