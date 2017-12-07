@@ -5,7 +5,7 @@ export container=$1
 export test_wait_time=$2
 export pumba_results=./results/pumba_results.log
 
-#Send termination signal to the main process inside target container(s)
+#Run all avaliable container tests
 
 echo -en "Pumba container kill test:\\n" 2>&1 | tee -a ./results/pumba_results.log
 timeout $test_wait_time ./pumba_linux_386 kill "$container"1 2>&1 | tee -a $pumba_results

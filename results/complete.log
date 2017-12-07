@@ -1,3 +1,1 @@
-+ grep level=info ./results/pumba_results.log
-+ echo -en 'Test(s) injected sucessfully\n'
 Test(s) injected sucessfully

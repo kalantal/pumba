@@ -23,6 +23,12 @@ The harder it is to disrupt the steady state, the more confidence we have in the
 
 ## Automated Usage
 
+```./pumba_chaos.sh [CONTAINER] [TIME TO RUN TESTS] [TEST TO RUN]```
+
+**pumba_all**
+```./pumba_chaos.sh rhel7 60 pumba_all```
+Run the full suite: kill, pause, stop, rm, delay, netem_loss, netem_rate
+
 **pumba_kill**
 ```./pumba_chaos.sh rhel7 60 pumba_kill```
 

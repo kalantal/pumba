@@ -1,10 +1,11 @@
 #!/bin/bash
 #set -x
 
-#Useage: ./pumba_master.sh [Container] [Duration before chaos] [Test to run]
+#Usage: ./pumba_master.sh [Container] [Duration before chaos] [Test to run]
 
 export container_name=$1
 export test_wait_time=$2
+export test=$3
 export complete_log=./results/complete.log
 export pumba_results=./results/pumba_results.log
 export kill_binary=./tools/kill_binary.sh
@@ -14,18 +15,39 @@ chmod +x ./tests/*
 chmod +x ./tools/*
 chmod +x ./pumba_linux_386
 
-#Validate paramaters
-if (( $# < 3 )); then
+#Validate parameters
+if (( "$#" < 3 )) || [ "$1" == -help ] || [ "$1" == --help ] || [ "$1" == help ]; then
 	echo -en "Chaos testing for docker containers\\n"
-	echo -en "Tests: pumba_all, pumba_kill, pumba_delay, pumba_pause,pumba_ stop, pumba_netem_loss, pumba_netem_rate\\n"
-	echo -en "Useage: ./pumba_chaos.sh [CONTAINER] [TIME TO RUN TESTS] [TEST TO RUN]\\n\\n"
-	echo -en "ex: ./pumba_chaos.sh rhel7 60 pumba_all\\n"
-	echo -en "ex: ./pumba_chaos.sh rhel7 60 pumba_kill\\n"
-	echo -en "ex: ./pumba_chaos.sh rhel7 60 pumba_delay\\n"
-	echo -en "ex: ./pumba_chaos.sh rhel7 60 pumba_pause\\n"
-	echo -en "ex: ./pumba_chaos.sh rhel7 60 pumba_stop\\n"
-	echo -en "ex: ./pumba_chaos.sh rhel7 60 pumba_netem_loss\\n"
-	echo -en "ex: ./pumba_chaos.sh rhel7 60 pumba_netem_rate\\n\\n"
+	echo -en "\\nUseage:\\n"
+	echo -en "  ./pumba_chaos.sh [CONTAINER] [TIME TO RUN TESTS] [TEST TO RUN]\\n"
+	echo -en "  ./pumba_chaos.sh help\\n\\n"	
+	echo -en "Container Options:\\n"	
+	echo -en "  Choose a container from the Citi docker repo\\n"
+	echo -en "  This container should be running your test payload\\n"
+	echo -en "  ex: rhel7\\n\\n"
+	echo -en "Time:\\n"
+	echo -en "  It is recommended that you inject these pumba tests when your container test payload is running\\n"
+	echo -en "  The minimum recommended time to use is 15 seconds before injection\\n"
+	echo -en "  Most test cases will not take place this soon\\n"
+	echo -en "  Time is selected as a plain digits in the format of seconds\\n"
+	echo -en "  ex: 60\\n\\n"
+	echo -en "Test Options:\\n"
+	echo -en "  pumba_all		Run all available container tests\\n"	
+	echo -en "  pumba_kill		Send termination signal to the main process inside target container(s)\\n"
+	echo -en "  pumba_delay		Delay egress traffic for specified containers; networks show variability so it is possible to add random variation; delay variation isn't purely random, so to emulate that there is a correlation\\n"
+	echo -en "  pumba_pause		Pause all running processes within target containers\\n"
+	echo -en "  pumba_rm		Remove target containers, with links and volumes\\n"
+	echo -en "  pumba_ stop		Stop the main process inside target containers, sending  SIGTERM, and then SIGKILL after a grace period\\n"
+	echo -en "  pumba_netem_loss	Adds packet losses, based on independent (Bernoulli) probability model\\n"
+	echo -en "  pumba_netem_rate	Rate limit egress traffic for specified containers\\n\\n"
+	echo -en "Example usage:\\n"
+	echo -en "  ex: ./pumba_chaos.sh rhel7 60 pumba_all\\n"
+	echo -en "  ex: ./pumba_chaos.sh rhel7 60 pumba_kill\\n"
+	echo -en "  ex: ./pumba_chaos.sh rhel7 60 pumba_delay\\n"
+	echo -en "  ex: ./pumba_chaos.sh rhel7 60 pumba_pause\\n"
+	echo -en "  ex: ./pumba_chaos.sh rhel7 60 pumba_stop\\n"
+	echo -en "  ex: ./pumba_chaos.sh rhel7 60 pumba_netem_loss\\n"
+	echo -en "  ex: ./pumba_chaos.sh rhel7 60 pumba_netem_rate\\n\\n"
   exit 0
 fi
 
@@ -36,18 +58,29 @@ sudo gpasswd -a "$USER" docker
 }
 docker_setup
 
-#Confirm clean enviornment
-#Using Docker instead of Pumba
-./tools/docker_nuke.sh
+#Confirm clean environment using Docker instead of Pumba
+"$docker_nuke"
 
-#Build the enviornment
+#Build a single container
 docker_build_container() {
 echo -en "Building containers for [$container_name]:\\n"
-#docker run -d --rm --name ubuntu-pumba "ubuntu" tail -f /dev/null
-#docker run -d --rm --name "$container_name"-pumba "$container_name" tail -f /dev/null
+docker run -d --rm --name "$container_name"1 "$container_name" tail -f /dev/null
+}
+#docker_build_container
+
+#Build multiple containers
+docker_build_container_all() {
+echo -en "Building containers for [$container_name]:\\n"
 for i in {1..7}; do docker run -d --rm --name "$container_name"$i "$container_name" tail -f /dev/null; done
 }
-docker_build_container
+#docker_build_container_all
+
+#Only build container equal to the number of tests requested
+if [ "$test" = pumba_all ] ; then
+	docker_build_container_all
+else
+	docker_build_container
+fi
 
 #CLEAN RUN
 echo 2>&1 | tee ./results/pumba_results.log
@@ -62,42 +95,42 @@ while [ $# -gt 0 ]; do
 shift #this preserves the first argument $1 as the $container_name
 	case "$1" in
 		pumba_kill)
-				./tests/pumba_kill.sh "$container_name"1 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$build_wait_time" && echo -en "Done\\n"
+				./tests/pumba_kill.sh "$container_name"1 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$test_wait_time" && echo -en "Done\\n"
 				echo -en "Docker kill test:\\n"
 				#Send termination signal to the main process inside target container(s)
 				;;
 		pumba_delay)
-				./tests/pumba_delay.sh "$container_name"2 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$build_wait_time" && echo -en "Done\\n"
+				./tests/pumba_delay.sh "$container_name"2 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$test_wait_time" && echo -en "Done\\n"
 				echo -en "Docker delay test:\\n"			
 				#Delay egress traffic for specified containers; networks show variability so it is possible to add random variation; delay variation isn't purely random, so to emulate that there is a correlation
 				;;
 		pumba_pause)
-				./tests/pumba_pause.sh "$container_name"3 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$build_wait_time" && echo -en "Done\\n"
+				./tests/pumba_pause.sh "$container_name"3 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$test_wait_time" && echo -en "Done\\n"
 				echo -en "Docker pause test:\\n"
 				#Stop the main process inside target containers, sending  SIGTERM, and then SIGKILL after a grace period
 				;;
 		pumba_stop)
-				./tests/pumba_stop.sh "$container_name"4 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$build_wait_time" && echo -en "Done\\n"
+				./tests/pumba_stop.sh "$container_name"4 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$test_wait_time" && echo -en "Done\\n"
 				echo -en "Docker stop test:\\n"			
 				#Remove target containers, with links and volumes
 				;;
 		pumba_rm)
-				./tests/pumba_rm.sh "$container_name"5 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$build_wait_time" && echo -en "Done\\n"
+				./tests/pumba_rm.sh "$container_name"5 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$test_wait_time" && echo -en "Done\\n"
 				echo -en "Docker rm test:\\n"			
 				#Pause all running processes within target containers
 				;;
 		pumba_netem_loss)
-				./tests/pumba_netem_loss.sh "$container_name"6 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$build_wait_time" && echo -en "Done\\n"
+				./tests/pumba_netem_loss.sh "$container_name"6 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$test_wait_time" && echo -en "Done\\n"
 				echo -en "Docker netem_loss test:\\n"
 				#Adds packet losses, based on independent (Bernoulli) probability model
 				;;
 		pumba_netem_rate)
-				./tests/pumba_netem_rate.sh "$container_name"7 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$build_wait_time" && echo -en "Done\\n"
+				./tests/pumba_netem_rate.sh "$container_name"7 "$test_wait_time" & "$kill_binary" "$test_wait_time" && sleep "$test_wait_time" && echo -en "Done\\n"
 				echo -en "Docker netem_rate test:\\n"
 				#Rate limit egress traffic for specified containers
 				;;
 		pumba_all)
-				./tests/pumba_all.sh "$container_name" "$test_wait_time" && sleep "$build_wait_time" && echo -en "Done\\n"
+				./tests/pumba_all.sh "$container_name" "$test_wait_time" && sleep "$test_wait_time" && echo -en "Done\\n"
 				echo -en "Docker test suite:\\n"
 				echo -en "kill, pause, stop, rm, delay, netem_loss, netem_rate\\n"
 				#Do all
@@ -131,10 +164,9 @@ else
 fi
 }
 pumba_validation 2>&1 | tee $complete_log
-#If single run test -- this is validation of test injection
 
-cat $complete_log
-cat $pumba_results
+#cat $complete_log
+#cat $pumba_results
 
 #Cleanup using Docker
 "$kill_binary" "$test_wait_time"

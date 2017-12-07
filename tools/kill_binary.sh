@@ -9,7 +9,7 @@ export test_wait_time=$1
 
 #sudo kill -9 `ps -aef | grep 'pumba_linux_386' | grep -v grep | awk '{print $2}'`
 
-sleep $test_wait_time
+sleep "$test_wait_time"
 
 pkill pumba_linux_386
 
