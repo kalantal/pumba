@@ -2,6 +2,7 @@
 #set -x
 
 export container=$1
+export test_wait_time=$2
 export pumba_results=./results/pumba_results.log
 
 cd tools/
@@ -16,8 +17,8 @@ cd ..
 echo -en "Pumba container delay test:\\n" 2>&1 | tee -a ./results/pumba_results.log
 
 pumba_netem_delay_containers() {
-sudo ./pumba_linux_386 netem --duration 20s --tc-image gaiadocker/iproute2 delay --time 3000 jitter 50 --distribution normal $container
+./pumba_linux_386 netem --duration 20s --tc-image gaiadocker/iproute2 delay --time 3000 jitter 50 --distribution normal $container
 }
-pumba_netem_delay_containers 2>&1 | tee -a ./results/pumba_results.log
+pumba_netem_delay_containers 2>&1 | tee -a $pumba_results
 
 exit 0

@@ -1,13 +1,3 @@
-Test(s) injected sucessfully
-Test(s) injected sucessfully
-Test(s) injected sucessfully
-Test(s) injected sucessfully
-Test(s) injection failed
-Test(s) injection failed
-Test(s) injected sucessfully
-Test(s) injected sucessfully
-Test(s) injected sucessfully
-Test(s) injected sucessfully
-Test(s) injected sucessfully
-Test(s) injected sucessfully
++ grep level=info ./results/pumba_results.log
++ echo -en 'Test(s) injected sucessfully\n'
 Test(s) injected sucessfully
