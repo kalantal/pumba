@@ -21,9 +21,25 @@ If your system is designed to be resilient, it should be able to recover from su
 
 The harder it is to disrupt the steady state, the more confidence we have in the behavior of the system.  If a weakness is uncovered, we now have a target for improvement before that behavior manifests in the system at large.
 
+## Options
+
+**Container:**
+  Choose a container from the Citi docker repo
+  This container should be running your test payload
+  ex: rhel7
+
+**Time:**
+  It is recommended that you inject these pumba tests when your container test payload is running
+  The minimum recommended time to use is 15 seconds before injection
+  Most test cases will not take place this soon
+  Time is selected as a plain digits in the format of seconds
+  ex: 60
+  
 ## Automated Usage
 
-```./pumba_chaos.sh [CONTAINER] [TIME TO RUN TESTS] [TEST TO RUN]```
+**Useage:**
+  ```./pumba_chaos.sh [CONTAINER] [TIME TO RUN TESTS] [TEST TO RUN]```
+  ```./pumba_chaos.sh help```
 
 **pumba_all**
 ```./pumba_chaos.sh rhel7 60 pumba_all```
