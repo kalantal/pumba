@@ -27,6 +27,7 @@ The harder it is to disrupt the steady state, the more confidence we have in the
   Choose a container from the Citi docker repo
   This container should be running your test payload
   ```ex: rhel7```
+  ```ex: docker-enterprise-dev-local.artifactrepository.citigroup.net/cate-citisystems-soe-rhel/rhel7:2016q3_b0```
 
 **Time:**
   It is recommended that you inject these pumba tests when your container test payload is running
@@ -43,6 +44,7 @@ The harder it is to disrupt the steady state, the more confidence we have in the
 
 **pumba_all**
 ```./pumba_chaos.sh rhel7 60 pumba_all```
+```./pumba_chaos.sh docker-enterprise-dev-local.artifactrepository.citigroup.net/cate-citisystems-soe-rhel/rhel7:2016q3_b0 60 pumba_all```
 Run the full suite: kill, pause, stop, rm, delay, netem_loss, netem_rate
 
 **pumba_kill**
