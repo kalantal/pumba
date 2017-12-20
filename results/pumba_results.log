@@ -1,24 +1,2 @@
 Pumba container kill test:
-time="2017-12-06T23:59:19-06:00" level=info msg="Killing /ubuntu1 (b8d16e13bbeca4233739b2364073d93ab111910599a4a43a963997427597656d) with signal SIGKILL" 
-Pumba container delay test:
-time="2017-12-07T00:00:20-06:00" level=info msg="Running netem command '[delay 3000ms 10ms 20.00]' on container 517dffe0d3a7561156b674aa15524266dfde1d946b6f310132e3074cf4e6234f for 20s" 
-time="2017-12-07T00:00:20-06:00" level=info msg="Start netem for container 517dffe0d3a7561156b674aa15524266dfde1d946b6f310132e3074cf4e6234f on 'eth0' with command '[delay 3000ms 10ms 20.00]'" 
-time="2017-12-07T00:00:40-06:00" level=info msg="Stopping netem on container 517dffe0d3a7561156b674aa15524266dfde1d946b6f310132e3074cf4e6234f" 
-time="2017-12-07T00:00:40-06:00" level=info msg="Stop netem for container 517dffe0d3a7561156b674aa15524266dfde1d946b6f310132e3074cf4e6234f on 'eth0'" 
-Pumba container pause test:
-time="2017-12-07T00:01:40-06:00" level=info msg="Pausing container cf25348eae6dd8653b6556eb9d715c6036347ab3064c056d21c3816b213ed834" 
-time="2017-12-07T00:01:51-06:00" level=info msg="Unpause container cf25348eae6dd8653b6556eb9d715c6036347ab3064c056d21c3816b213ed834" 
-Pumba container stop test:
-time="2017-12-07T00:02:51-06:00" level=info msg="Stopping /ubuntu4 (674e90c6b328cd1d62577982019a92776fa8ea9e7cb01a472b50f94bb17a136f) with SIGTERM" 
-Pumba container rm test:
-time="2017-12-07T00:04:51-06:00" level=info msg="Removing container 327c429c4f59003221733572552ffc4b896ac882df57c06b5299e69f09d3f74e" 
-Pumba container netem loss test:
-time="2017-12-07T00:06:51-06:00" level=info msg="Running netem command '[loss 20.00]' on container a2c216a10b409006b69ec478f8298c72a290988b1968ed6d96b98c4eb35ed139 for 1m0s" 
-time="2017-12-07T00:06:51-06:00" level=info msg="Start netem for container a2c216a10b409006b69ec478f8298c72a290988b1968ed6d96b98c4eb35ed139 on 'eth0' with command '[loss 20.00]'" 
-time="2017-12-07T00:07:51-06:00" level=info msg="Stopping netem on container a2c216a10b409006b69ec478f8298c72a290988b1968ed6d96b98c4eb35ed139" 
-time="2017-12-07T00:07:51-06:00" level=info msg="Stop netem for container a2c216a10b409006b69ec478f8298c72a290988b1968ed6d96b98c4eb35ed139 on 'eth0'" 
-Pumba container netem rate test:
-time="2017-12-07T00:08:51-06:00" level=info msg="Running netem command '[rate 100kbit]' on container ef9fef7e04bcac5d3b70743450c8be5116232839c2379b7c76c77898153b2566 for 1m0s" 
-time="2017-12-07T00:08:51-06:00" level=info msg="Start netem for container ef9fef7e04bcac5d3b70743450c8be5116232839c2379b7c76c77898153b2566 on 'eth0' with command '[rate 100kbit]'" 
-time="2017-12-07T00:09:51-06:00" level=info msg="Stopping netem on container ef9fef7e04bcac5d3b70743450c8be5116232839c2379b7c76c77898153b2566" 
-time="2017-12-07T00:09:51-06:00" level=info msg="Stop netem for container ef9fef7e04bcac5d3b70743450c8be5116232839c2379b7c76c77898153b2566 on 'eth0'" 
+time="2017-12-19T12:35:25-05:00" level=info msg="Killing /Pumba_Tester1 (c05b90081cae092d6b18b4db26334011d5635880d3cae10859b456e291d9835e) with signal SIGKILL" 
