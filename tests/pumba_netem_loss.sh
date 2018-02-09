@@ -12,7 +12,7 @@ cd ..
 
 #Adds packet losses, based on independent (Bernoulli) probability model
 
-echo -en "Pumba container netem loss test:\\n" 2>&1 | tee -a ./results/pumba_results.log
+echo -en "Pumba container netem loss test:\\n" 2>&1 | tee -a $pumba_results
 
 pumba_netem_loss_containers() {
 ./pumba_linux_386 netem --duration 1m --tc-image gaiadocker/iproute2 loss --percent 20 $container
