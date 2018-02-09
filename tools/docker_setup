@@ -1,0 +1,9 @@
+sudo yum -y install  wget
+wget https://download.docker.com/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo
+sudo yum -y install docker docker-ce
+systemctl start docker
+systemctl enable docker
+groupadd docker
+useradd justin
+usermod -aG docker justin
+docker run -it ubuntu echo "Hello World"
