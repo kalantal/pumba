@@ -6,8 +6,9 @@
 export container_name=$1
 export test_wait_time=$2
 export test=$3
-export complete_log=./results/complete.log
+export complete_log=./results/pumba_complete.log
 export pumba_results=./results/pumba_results.log
+export watcher_log=./results/pumba_watcher.log
 export kill_binary=./tools/kill_binary.sh
 export docker_nuke=./tools/docker_nuke.sh
 
@@ -84,10 +85,10 @@ else
 fi
 
 #CLEAN RUN
-echo 2>&1 | tee ./results/pumba_results.log
+echo 2>&1 | tee $watcher_log
 
 #TESTING RUN
-#echo 2>&1 | tee -a ./results/pumba_results.log
+#echo 2>&1 | tee -a watcher_log
 
 echo -en "Pausing for [$test_wait_time] seconds to allow containers to spin up and tests to start.\\n"
 sleep "$test_wait_time"
@@ -168,6 +169,9 @@ pumba_validation 2>&1 | tee $complete_log
 
 #cat $complete_log
 #cat $pumba_results
+
+echo 2>&1 | tee "$watcher"
+docker logs pumba_tester > $watcher
 
 #Cleanup using Docker
 "$kill_binary" "$test_wait_time"
