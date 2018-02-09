@@ -12,7 +12,7 @@ cd ..
 
 #Rate limit egress traffic for specified containers
 
-echo -en "Pumba container netem rate test:\\n" 2>&1 | tee -a ./results/pumba_results.log
+echo -en "Pumba container netem rate test:\\n" 2>&1 | tee -a $pumba_results
 
 pumba_netem_rate_containers() {
 ./pumba_linux_386 netem --duration 1m --tc-image gaiadocker/iproute2 rate $container
