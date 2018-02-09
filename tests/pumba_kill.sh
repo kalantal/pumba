@@ -7,7 +7,7 @@ export pumba_results=./results/pumba_results.log
 
 #Send termination signal to the main process inside target container(s)
 
-echo -en "Pumba container kill test:\\n" 2>&1 | tee -a ./results/pumba_results.log
+echo -en "Pumba container kill test:\\n" 2>&1 | tee -a $pumba_results
 
 pumba_kill_containers() {
 ./pumba_linux_386 kill $container
