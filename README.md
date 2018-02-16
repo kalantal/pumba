@@ -37,7 +37,7 @@ The harder it is to disrupt the steady state, the more confidence we have in the
   
 ## Automated Usage
 
-**Useage:**
+**Usage:**
   ```./pumba_chaos.sh [CONTAINER] [TIME TO RUN TESTS] [TEST TO RUN]```
   ```./pumba_chaos.sh help```
 
